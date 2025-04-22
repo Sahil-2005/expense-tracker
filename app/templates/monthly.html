@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-4">Monthly Breakdown</h2>
+
+<div class="card p-4 shadow-sm w-100" style = "width: 60%; margin: auto;">
+    <canvas id="monthlyChart"></canvas>
+</div>
+
+<script>
+const ctx = document.getElementById('monthlyChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels | tojson }},
+        datasets: [
+            {
+                label: 'Income',
+                data: {{ income_data | tojson }},
+                backgroundColor: '#4CAF50'
+            },
+            {
+                label: 'Expense',
+                data: {{ expense_data | tojson }},
+                backgroundColor: '#F44336'
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `${context.dataset.label}: ₹${context.parsed.y}`;
+                    }
+                }
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

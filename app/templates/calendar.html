@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4 mb-5">
+    <h2 class="text-center mb-4"> 🗓️Calendar View</h2>
+
+      <div id="calendar" class="shadow p-3 rounded"></div>
+    
+</div>
+
+<!-- FullCalendar Styles and Script -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<!-- FullCalendar CSS -->
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      events: {{ events | tojson | safe }}
+    });
+
+    calendar.render();
+  });
+</script>
+
+<style>
+    /* Base calendar styling */
+    #calendar {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: var(--bs-box-shadow);
+    }
+  
+    /* Fix weekday header text (Mon, Tue, etc.) */
+    .fc .fc-col-header-cell {
+      background-color: var(--bs-secondary-bg);  /* subtle header bg */
+      color: var(--bs-body-color);               /* readable in both themes */
+      font-weight: 600;
+      text-align: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--bs-border-color);
+    }
+  
+    /* Adjust day cells if needed */
+    .fc .fc-daygrid-day {
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+    }
+  
+    /* Event bubble */
+    .fc-event {
+      background-color: var(--bs-primary);
+      border: none;
+      color: #fff;
+    }
+  
+    /* On hover: make events stand out */
+    .fc-event:hover {
+      background-color: var(--bs-primary-dark);
+    }
+
+    
+  </style>
+  
+{% endblock %}

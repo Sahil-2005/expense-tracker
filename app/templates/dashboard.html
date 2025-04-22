@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h4 class="text-center mb-2">👋 Welcome back, <strong>{{ username }}</strong>!</h4>
+<h2 class="text-center mb-4">Dashboard</h2>
+
+
+<div class="row mb-4">
+  <div class="col-12 col-md-6 mb-3 mb-md-0">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Income</h5>
+                <p class="text-success fw-bold fs-4">₹{{ income }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="card text-center shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Total Expense</h5>
+                <p class="text-danger fw-bold fs-4">₹{{ total_expense }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card p-4">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
+      <h5 class="text-center mb-2">Spending Breakdown</h5>
+  
+      <div class="d-flex gap-2">
+        <select id="chartTypeSelector" class="form-select form-select-sm">
+          <option value="pie">Pie Chart</option>
+          <option value="bar">Bar Chart</option>
+        </select>
+  
+        <select id="dataFilterSelector" class="form-select form-select-sm d-none">
+          <option value="both">Income + Expense</option>
+          <option value="Income">Income Only</option>
+          <option value="Expense">Expense Only</option>
+        </select>
+      </div>
+    </div>
+  
+
+    <div id="chart-container" class="mt-4 mx-auto">
+      <canvas id="myChart"></canvas>
+    </div>
+    
+    
+  </div>
+  
+  
+
+  <script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+  
+    const allLabels = {{ labels | tojson }};
+    const allValues = {{ values | tojson }};
+    const allTypes = {{ types | tojson }};  // You'll need to pass this list from Flask: type per entry
+  
+    let chartType = 'pie';
+    let chart;
+  
+    const backgroundColors = [
+      '#4CAF50', '#F44336', '#2196F3', '#FF9800', '#9C27B0', '#3F51B5',
+      '#E91E63', '#00BCD4', '#8BC34A', '#FFC107', '#795548', '#607D8B'
+    ];
+  
+    function getFilteredData(filter) {
+      if (chartType === 'pie' || filter === 'both') {
+        return {
+          labels: allLabels,
+          data: allValues
+        };
+      }
+  
+      const filteredLabels = [];
+      const filteredValues = [];
+  
+      for (let i = 0; i < allLabels.length; i++) {
+        if (allTypes[i] === filter) {
+          filteredLabels.push(allLabels[i]);
+          filteredValues.push(allValues[i]);
+        }
+      }
+  
+      return {
+        labels: filteredLabels,
+        data: filteredValues
+      };
+    }
+  
+    function renderChart1(type, filter = 'both') {
+      const filtered = getFilteredData(filter);
+      chart = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: filtered.labels,
+          datasets: [{
+            label: 'Income & Expense Distribution',
+            data: filtered.data,
+            backgroundColor: backgroundColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: type === 'pie' ? 'right' : 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  let value = context.raw || 0;
+                  return `${label}: ₹${value}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+  
+
+    function renderChart(type, filter = 'both') {
+      const chartContainer = document.getElementById('chart-container');
+    
+      // Update container class
+      if (type === 'bar') {
+        chartContainer.classList.add('bar-chart');
+      } else {
+        chartContainer.classList.remove('bar-chart');
+      }
+    
+      const filtered = getFilteredData(filter);
+      chart = new Chart(ctx, {
+        type: type,
+        data: {
+          labels: filtered.labels,
+          datasets: [{
+            label: 'Income & Expense Distribution',
+            data: filtered.data,
+            backgroundColor: backgroundColors,
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: type === 'pie' ? 'right' : 'top'
+            },
+            tooltip: {
+              callbacks: {
+                label: function(context) {
+                  let label = context.label || '';
+                  let value = context.raw || 0;
+                  return `${label}: ₹${value}`;
+                }
+              }
+            }
+          }
+        }
+      });
+    }
+    
+    document.getElementById('chartTypeSelector').addEventListener('change', function () {
+      chartType = this.value;
+      chart.destroy();
+  
+      const filterSelector = document.getElementById('dataFilterSelector');
+  
+      if (chartType === 'bar') {
+        filterSelector.classList.remove('d-none');
+        renderChart(chartType, filterSelector.value);
+      } else {
+        filterSelector.classList.add('d-none');
+        renderChart(chartType);
+      }
+    });
+  
+    document.getElementById('dataFilterSelector').addEventListener('change', function () {
+      if (chartType === 'bar') {
+        chart.destroy();
+        renderChart('bar', this.value);
+      }
+    });
+  
+    // Initial render
+    renderChart('pie');
+  </script>
+  
+{% endblock %}

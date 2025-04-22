@@ -1,0 +1,164 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --card-color: #f8f9fa;
+    --accent-color: #0d6efd;
+}
+
+[data-theme='dark'] {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --card-color: #1e1e1e;
+    --accent-color: #90caf9;
+}
+
+
+body.dark-mode .fc .fc-col-header-cell {
+    background-color: #1e1e1e;
+    color: #f1f1f1;
+  }
+  
+
+[data-theme='light'] .navbar .nav-link {
+    color: #000000 !important;
+}
+
+[data-theme='dark'] .navbar .nav-link {
+    color: #ffffff !important;
+}
+
+
+[data-theme='light'] .navbar-brand {
+    color: #000000 !important;
+}
+
+[data-theme='dark'] .navbar-brand {
+    color: #ffffff !important;
+}
+
+
+
+
+/* Optional: Hover effect for better UX */
+.navbar .nav-link:hover {
+    text-decoration: underline;
+}
+
+
+body {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color);
+}
+
+.navbar {
+    background-color: var(--card-color) !important;
+}
+
+.card, .shadow-sm, table, .form-control, .form-select, .btn {
+    background-color: var(--card-color) !important;
+    color: var(--text-color) !important;
+    border-color: var(--accent-color) !important;
+}
+
+a, .btn {
+    color: var(--accent-color);
+}
+
+thead {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+
+h4.text-center strong {
+    color: var(--accent-color);
+}
+
+h4.text-center {
+    font-weight: 500;
+    font-size: 1.75rem;
+}
+
+
+
+
+/* --- Hover Effects for Login & Register Pages --- */
+
+/* Input focus effect */
+input.form-control:focus, select.form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 5px var(--accent-color);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Button hover */
+.btn:hover {
+    background-color: var(--accent-color) !important;
+    color: #fff !important;
+    border-color: var(--accent-color);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Card subtle pop on hover */
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Link hover in forms */
+.card a:hover {
+    text-decoration: underline;
+    color: var(--accent-color);
+}
+
+/* Register/Login Link underlines and color change */
+p a {
+    color: var(--accent-color);
+    transition: color 0.2s ease-in-out;
+}
+
+p a:hover {
+    text-decoration: underline;
+    color: var(--accent-color);
+}
+/* Adjust button hover for dark mode specifically if needed */
+[data-theme='dark'] .btn:hover {
+    background-color: var(--accent-color);
+    color: #000 !important;
+}
+
+[data-theme='dark'] .nt {
+    background-color: #ffffff !important;
+}
+
+
+#chart-container {
+    width: 90%;
+    max-width: 700px;
+  }
+  
+@media (min-width: 768px) {
+    #chart-container.bar-chart {
+      max-width: 1000px;
+    }
+    
+    #chart-container canvas {
+        min-height: 250px;
+      }    
+  }
+
+
+  body.dark-mode #calendar .fc-event {
+    background-color: #198754 !important;
+    color: white !important;
+  }
+  
+  body.dark-mode .fc-toolbar-title {
+    color: #fff;
+  }
+  
+  body.dark-mode .fc-daygrid-day-number {
+    color: #ccc;
+  }
+  

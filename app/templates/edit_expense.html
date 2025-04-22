@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="text-center mb-4">Edit Transaction</h2>
+<form method="POST" class="card p-4 shadow-sm col-md-6 mx-auto">
+    <div class="mb-3">
+        <label class="form-label">Type</label>
+        <select name="type" class="form-select" required>
+            <option value="Income" {% if expense.type == 'Income' %}selected{% endif %}>Income</option>
+            <option value="Expense" {% if expense.type == 'Expense' %}selected{% endif %}>Expense</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Category</label>
+        <input type="text" name="category" class="form-control" value="{{ expense.category }}" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Amount</label>
+        <input type="number" name="amount" class="form-control" value="{{ expense.amount }}" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <input type="text" name="description" class="form-control" value="{{ expense.description }}">
+    </div>
+    <button type="submit" class="btn btn-success w-100">Update</button>
+</form>
+{% endblock %}
